@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HM05 - Q1 - Grammar</title>
+	<meta charset="utf-8">
+	<script src="../jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../main.css">
+	<style type="text/css">
+	label input, #inputGrammar{
+		background: hsla(0,0%,0%,.05);
+		border: transparent;
+		box-shadow: 3px 5px 5px 5px #6a6a6a;
+		border-radius: 5px;
+		outline: none;
+		color: white;
+		font-size: 15px;
+		height: 100px;
+		width: 200px;
+		padding: 20px;
+	}
+</style>
+</head>
+<body>
+	<p>
+		<a href="../hm05.html"><- Voltar</a>
+	</p>
+	<p>
+		<h3>HM05 - Q1 - Grammar</h3>
+	</p>
+	<center>
+		<div align="left" id="inputGrammar"></div>
+	</center>
+	<div align="center" id="automata-table"></div>
+	<p>
+		<form id="GrammarCYK" method="get" action="#">
+			<label>Input</label>
+			<input type="text" name="string" id="input-string" autocomplete="off" value="bbb">
+			<input type="submit" name="submit" value="Send">
+		</form>
+	</p>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="output"></pre>
+	</div>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="log"></pre>
+	</div>
+</body>
+<!-- <script type="text/javascript" src="q1.js"></script> -->
+<!-- <script type="text/javascript" src="CYK.js"></script> -->
+<script type="text/javascript" src="../dfa.js"></script>
+<script type="text/javascript">
+	$(document).ready(function (argument) {
+		// console.clear();
+		var defaultGrammar = ""+
+		"W\t->\tAB"+"<br>"+
+		"A\t->\taaaA | aaA | aA| a"+"<br>"+
+		"B\t->\tbB | ε";
+
+		var myDFA = new DFA();
+		var q0 = new STATE("q0",true,false);
+		var q1 = new STATE("q1",false,true);
+		var q2 = new STATE("q2",false,true);
+		var q3 = new STATE("q3",false,false);
+
+		q0.transitions.push(new TRANSITION('a',q1));
+		q0.transitions.push(new TRANSITION('b',q3));
+
+		q1.transitions.push(new TRANSITION('a',q1));
+		q1.transitions.push(new TRANSITION('b',q2));
+
+		q2.transitions.push(new TRANSITION('a',q3));
+		q2.transitions.push(new TRANSITION('b',q2));
+
+		q3.transitions.push(new TRANSITION('a',q3));
+		q3.transitions.push(new TRANSITION('b',q3));
+
+		myDFA.addState(q0);
+		myDFA.addState(q1);
+		myDFA.addState(q2);
+		myDFA.addState(q3);
+
+		// myDFA.showTable("automata-table");
+
+		myDFA.output = "pre#log";
+		$("pre#log").html("");
+		
+		$("div#inputGrammar").html(defaultGrammar);
+
+		$("input#input-string").focus();
+		$("form#GrammarCYK").submit(function (evt){
+			evt.preventDefault();
+			var local_input = $( "input:first" ).val();
+			// console.clear()
+
+			// if(local_input.length > 0){
+				myDFA.output = "pre#log";
+				$("pre#log").html("");
+				myDFA.run(local_input);
+			// }
+		});
+	});
+</script>
+</html>

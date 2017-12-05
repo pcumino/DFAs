@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HM05 - Q4 - CYK</title>
+	<meta charset="utf-8">
+	<script src="../jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../main.css">
+	<style type="text/css">
+	label input, #inputGrammar{
+		/*color: red;*/
+		/*width: 15px;*/
+		background: hsla(0,0%,0%,.05);
+		border: transparent;
+			/*border-top: solid 1px #000;
+			border-bottom: solid 1px #aaa;
+			border-left: solid 1px #000;
+			border-right: solid 1px #aaa;*/
+			box-shadow: 3px 5px 5px 5px #6a6a6a;
+			border-radius: 5px;
+			outline: none;
+			color: white;
+			font-size: 15px;
+			min-height: 200px;
+			max-height: 400px;
+			min-width: 200px;
+			max-width: 300px;
+			padding: 10px;
+		}
+	</style>
+</head>
+<body>
+	<p>
+		<a href="../hm05.html"><- Voltar</a>
+	</p>
+	<p>
+		<h3>HM05 - Q4 - CYK</h3>
+		<pre>Gramática deve estar na FNC</pre>
+	</p>
+	<center>
+		<textarea id="inputGrammar"></textarea>	
+	</center>
+	<div align="center" id="automata-table"></div>
+	<p>
+		<form id="GrammarCYK" method="get" action="#">
+			<label>Input</label>
+			<input type="text" name="string" id="input-string" autocomplete="off" value="babbaa">
+			<input type="submit" name="submit" value="Send">
+		</form>
+	</p>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="output"></pre>
+	</div>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="log"></pre>
+	</div>
+</body>
+<script type="text/javascript" src="CYK.js"></script>
+<script type="text/javascript">
+	$(document).ready(function (argument) {
+		console.clear();
+		var defaultGrammar = ""+
+		"S->XB | YA"+"\n"+
+		"A->a | XS | YU"+"\n"+
+		"B->b | YS | XV"+"\n"+
+		"X->a"+"\n"+
+		"Y->b"+"\n"+
+		"U->AA"+"\n"+
+		"V->BB";
+		$("textarea#inputGrammar").html(defaultGrammar);
+		$("textarea#inputGrammar").focus();
+
+		$("form#GrammarCYK").submit(function (evt){
+			evt.preventDefault();
+			// console.clear()
+			var myGrammar = new Grammar();
+			var local_input = $( "input:first" ).val();
+			myGrammar.setGrammar($("textarea#inputGrammar")[0].value);
+			var res = myGrammar.runCYK(local_input);
+			if(res){
+				$("#output").addClass("green");
+				$("#output").removeClass("red");
+				$("#output").html("\""+local_input+"\" is valid!");
+			}
+			else{
+				$("#output").addClass("red");
+				$("#output").removeClass("green");
+				$("#output").html("\""+local_input+"\" is not valid!");
+			}
+		});
+	});
+</script>
+</html>

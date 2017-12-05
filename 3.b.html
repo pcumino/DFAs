@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>3.b</title>
+	<script src="jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+	<p>
+		<a href="index2.html"><- Voltar</a>
+	</p>
+	<p>
+		<h3>3.b</h3>
+	</p>
+	<div align="center" id="automata-table"></div>
+
+	<p>
+		<form id="DFA_form" method="get" action="#">
+			<label>Input</label>
+			<input type="text" name="string" id="input-string" autocomplete="off">
+			<input type="submit" name="submit">
+		</form>
+	</p>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="log"></pre>
+	</div>
+</body>
+<script type="text/javascript" src="dfa.js"></script>
+<script type="text/javascript">
+	$(document).ready(function (argument) {
+		// console.clear();
+		var myDFA = new DFA();
+		var q0 = new STATE("q0",true,true);
+		var q1 = new STATE("q1",false,true);
+		var q2 = new STATE("q2",false,false);
+		var q3 = new STATE("q3",false,true);
+		var q4 = new STATE("q4",false,false);
+
+		q0.transitions.push(new TRANSITION('a',q4));
+		q0.transitions.push(new TRANSITION('b',q1));
+
+		q1.transitions.push(new TRANSITION('a',q2));
+		q1.transitions.push(new TRANSITION('b',q1));
+
+		q2.transitions.push(new TRANSITION('a',q4));
+		q2.transitions.push(new TRANSITION('b',q3));
+
+		q3.transitions.push(new TRANSITION('a',q2));
+		q3.transitions.push(new TRANSITION('b',q3));
+
+		q4.transitions.push(new TRANSITION('a',q4));
+		q4.transitions.push(new TRANSITION('b',q4));
+
+		myDFA.addState(q0);
+		myDFA.addState(q1);
+		myDFA.addState(q2);
+		myDFA.addState(q3);
+		myDFA.addState(q4);
+
+		myDFA.showTable("automata-table");
+
+		myDFA.output = "pre#log";
+		$("pre#log").html("");
+		
+		$("input#input-string").focus();
+		$("form#DFA_form").submit(function (evt){
+			evt.preventDefault();
+			var local_input = $( "input:first" ).val();
+			// console.clear()
+
+			// if(local_input.length > 0){
+				myDFA.output = "pre#log";
+				$("pre#log").html("");
+				myDFA.run(local_input);
+			// }
+		});
+	});
+</script>
+</html>

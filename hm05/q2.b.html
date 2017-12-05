@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HM05 - Q2.b - Stack DFA</title>
+	<script src="../jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+	<p>
+		<a href="../hm05.html"><- Voltar</a>
+	</p>
+	<p>
+		<h3>HM05 - Q2.b - Stack DFA</h3>
+	</p>
+	<div align="center" id="automata-table">
+		<p>
+			L = {a<sup>n</sup> b<sup>3n+1</sup> | n >= 1}
+		</p>
+		<img src="q2b.png">
+	</div>
+	<p>
+		<form id="DFA_form" method="get" action="#">
+			<label>Input</label>
+			<input type="text" name="string" id="input-string" autocomplete="off">
+			<input type="submit" name="submit">
+		</form>
+	</p>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="output"></pre>
+	</div>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="log"></pre>
+	</div>
+</body>
+<script type="text/javascript" src="stackDFA.js"></script>
+<script type="text/javascript">
+	$(document).ready(function (argument) {
+		// console.clear();
+		// xXX         XXxx   .    .    XXX   .
+		var myDFA = new stackDFA();
+		var q0 = new STATE("q0",true,false);
+		var q1 = new STATE("q1",false,false);
+		var q2 = new STATE("q2",false,false);
+		var q3 = new STATE("q3",false,true);
+
+		// transitions: new TRANSITION([letter],[value on top of stack],[add to stack], [next state])
+		q0.transitions.push(new TRANSITION('a',null,'NNN',q0));
+		q0.transitions.push(new TRANSITION('b','N',null,q1));
+
+		q1.transitions.push(new TRANSITION('b','N',null,q1));
+		q1.transitions.push(new TRANSITION('b','Z','Z',q2));
+		
+		q2.transitions.push(new TRANSITION(' ','Z',null,q3));
+
+		myDFA.addState(q0);
+		myDFA.addState(q1);
+		myDFA.addState(q2);
+		myDFA.addState(q3);
+
+		// myDFA.showTable("automata-table");
+
+		myDFA.output = "pre#log";
+		$("pre#log").html("");
+
+
+		// var temparr = [1,2,3];
+		// console.log(temparr);
+		// temparr.shift();
+		// console.log(temparr);
+		// temparr.unshift(9);
+		// console.log(temparr);
+
+		
+		$("input#input-string").focus();
+		$("form#DFA_form").submit(function (evt){
+			evt.preventDefault();
+			var local_input = $( "input:first" ).val();
+			// console.clear()
+
+			// if(local_input.length > 0){
+				myDFA.output = "pre#log";
+				myDFA.stack = ['Z'];
+				$("pre#log").html("");
+				myDFA.run(local_input+' ');
+				// $("pre#output").html(myDFA.transdutor);
+				myDFA.transdutor = "";
+			// }
+		});
+	});
+</script>
+</html>

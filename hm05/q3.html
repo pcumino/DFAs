@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HM05 - Q3 - Coin</title>
+	<script src="../jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+	<p>
+		<a href="../hm05.html"><- Voltar</a>
+	</p>
+	<p>
+		<h3>HM05 - Q3 - Coin</h3>
+	</p>
+	<center>
+		<table>
+			<tr>
+				<td>x = 25</td>
+				<tr>
+					<td>y = 50</td>
+				</tr>
+				<tr>
+					<td>z = 100</td>
+				</tr>
+			</tr>
+		</table>
+	</center>
+	<div align="center" id="automata-table"></div>
+	<p>
+		<form id="DFA_form" method="get" action="#">
+			<label>Input</label>
+			<input type="text" name="string" id="input-string" autocomplete="off">
+			<input type="submit" name="submit">
+		</form>
+	</p>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="output"></pre>
+	</div>
+
+	<div style="margin: 0px auto; width: 500px; ">
+		<pre id="log"></pre>
+	</div>
+</body>
+<script type="text/javascript" src="../Mealy.js"></script>
+<!-- <script type="text/javascript" src="../q2.js"></script> -->
+<script type="text/javascript">
+	$(document).ready(function (argument) {
+		// console.clear();
+		// xXX         XXxx   .    .    XXX   .
+		var myDFA = new DFA();
+		var q0 = new STATE("q0",true,true);
+		var c25 = new STATE("c25",false,true);
+		var c50 = new STATE("c50",false,true);
+		var c75 = new STATE("c75",false,true);
+
+		q0.transitions.push(new TRANSITION('x',' 0',c25));
+		q0.transitions.push(new TRANSITION('y',' 0',c50));
+		q0.transitions.push(new TRANSITION('z',' 1',q0));
+
+		c25.transitions.push(new TRANSITION('x',' 0',c50));
+		c25.transitions.push(new TRANSITION('y',' 0',c75));
+		c25.transitions.push(new TRANSITION('z',' 1',c25));
+		
+		c50.transitions.push(new TRANSITION('x',' 0',c75));
+		c50.transitions.push(new TRANSITION('y',' 1',q0));
+		c50.transitions.push(new TRANSITION('z',' 1',c50));
+		
+		c75.transitions.push(new TRANSITION('x',' 1',q0));
+		c75.transitions.push(new TRANSITION('y',' 1',c25));
+		c75.transitions.push(new TRANSITION('z',' 1',c75));
+
+		myDFA.addState(q0);
+		myDFA.addState(c25);
+		myDFA.addState(c50);
+		myDFA.addState(c75);
+
+		myDFA.showTable("automata-table");
+
+		myDFA.output = "pre#log";
+		$("pre#log").html("");
+		
+		$("input#input-string").focus();
+		$("form#DFA_form").submit(function (evt){
+			evt.preventDefault();
+			var local_input = $( "input:first" ).val();
+			// console.clear()
+
+			// if(local_input.length > 0){
+				myDFA.output = "pre#log";
+				$("pre#log").html("");
+				myDFA.run(local_input);
+				$("pre#output").html(myDFA.transdutor);
+				myDFA.transdutor = "";
+			// }
+		});
+	});
+</script>
+</html>

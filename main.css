@@ -1,0 +1,79 @@
+body{
+	min-width: 400px;
+	text-align: center;
+	/*padding-top: 70px;*/
+	padding-bottom: 70px;
+	font: small-caption;
+	font-size: 14px;
+	border: solid 1px black;
+	border-radius: 10px;
+	margin: 50px;
+	color: white;
+	background-color: #7e7e7e;
+}
+table{
+	padding-bottom: 30px;
+	text-align: center;
+}
+table td,table th{
+	/*border-left: solid 1px;*/
+	/*border-right: solid 1px;*/
+	width: 50px;
+}
+table th.firstState,
+table td.firstState{
+	border-right: solid 2px;
+	font-weight: bold;
+}
+td.isInitial:before{
+	content: "\2192";/*"&rarr;";*/
+	text-align: right;
+}
+td.isFinal:before{
+	content: "\2190";/*"&larr;";*/
+	text-align: right;
+}
+td.isFinal.isInitial:before{
+	content: "\2194";/*"&larr;";*/
+	text-align: right;
+}
+input#my_input{
+	text-align: center;
+	width: 30px;
+	font-size: 30px;
+	outline: none;
+}
+input[type="submit"]{
+	color: red;
+	padding: 5px;
+	/*font-size: 20px;*/
+	font-weight: bold;
+}
+pre.red{
+	color: red;
+}
+pre.green{
+	color: #0d8;
+	font-weight: bold;
+}
+pre#transitions{
+	font-size: 15px;
+}
+pre.links{
+	font-size: 18px;
+	background-color: #eee;
+	border-radius: 10px 10px 10px 10px;
+	/*margin-left: 25%;
+	margin-right: 25%;
+	text-align: center;*/
+	width: 100px;
+}
+pre#output{
+	/*text-align: left;*/
+	font-size: 20px;
+	/*border: solid 1px red;*/
+	/*width: 500px;*/
+}
+pre#log{
+	text-align: left;
+}
